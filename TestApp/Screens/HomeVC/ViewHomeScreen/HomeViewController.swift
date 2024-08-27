@@ -13,8 +13,12 @@ final class HomeViewController: UIViewController {
     //MARK: Presenter
     private var presenter: HomePresenter?
     
-    let options = ["🇺🇦 Ukraine", "🇯🇵 Japan", "🇨🇿 Czech", "🇫🇷 France", "🇺🇸 United States" ]
-     
+    //MARK: Example Country
+    let options = ["🇺🇦 Ukraine", "🇯🇵 Japan", "🇨🇿 Czech", "🇫🇷 France", "🇺🇸 United States"]
+    let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    let times = ["5 am", "9 am", "11 am", "3 pm", "6 pm"]
+
+    
     ///Home
     private lazy var homeGromusButton: UIButton = {
         let button = UIButton(type: .system)
@@ -138,7 +142,7 @@ final class HomeViewController: UIViewController {
         textField.leftViewMode = .always
         
         NSLayoutConstraint.activate([
-            textField.heightAnchor.constraint(equalToConstant: 35)
+            textField.heightAnchor.constraint(equalToConstant: 40)
         ])
         
         return textField
@@ -200,10 +204,6 @@ final class HomeViewController: UIViewController {
         button.tintColor = .white
         button.addTarget(self, action: #selector(tapDropDownCategory), for: .touchUpInside)
         
-        NSLayoutConstraint.activate([
-            button.widthAnchor.constraint(equalToConstant: 170)
-        ])
-        
         return button
     }()
     
@@ -213,7 +213,8 @@ final class HomeViewController: UIViewController {
         tableViewDropDown.dataSource = self
         tableViewDropDown.delegate = self
         tableViewDropDown.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-       
+        tableViewDropDown.backgroundColor = .viewColorr
+        
         tableViewDropDown.tintColor = .black
         tableViewDropDown.layer.cornerRadius = 20
         
@@ -234,19 +235,148 @@ final class HomeViewController: UIViewController {
         return stackView
     }()
     
-    ///StackView
+    ///Fruquecy
+    private lazy var frequencyLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Frequency: "
+        
+        label.textColor = .white
+        label.font = UIFont(name: "Montserrat-SemiBold", size: 13)
+        label.numberOfLines = 0
+        
+        return label
+    }()
+    
+    ///Time Week
+    private lazy var timeWeekLabel: UILabel = {
+        let label = UILabel()
+        let atributeString = NSMutableAttributedString(string: "3 times a week")
+        atributeString.underline(subString: "3 times a week", style: .single)
+        
+        label.attributedText = atributeString
+        label.textColor = .labelColorr
+        label.font = UIFont(name: "Montserrat-SemiBold", size: 13)
+        label.numberOfLines = 0
+        
+        return label
+    }()
+    
+    ///Button Question
+    private lazy var questionButtonOne: UIButton = {
+        var config = UIButton.Configuration.plain()
+        
+        let originalImage = UIImage(systemName: "questionmark.circle")
+        let resizedImage = originalImage?.resized(to: CGSize(width: 18, height: 18))
+        let tintColorImage = resizedImage?.withTintColor(.gray, renderingMode: .alwaysOriginal)
+        
+        config.image = tintColorImage
+        config.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5) //
+        let button = UIButton(configuration: config)
+        
+        return button
+    }()
+    
+    ///Duration
+    private lazy var durationLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Duration: "
+        label.textColor = .white
+        label.font = UIFont(name: "Montserrat-SemiBold", size: 13)
+        label.numberOfLines = 0
+        
+        return label
+    }()
+    
+    ///Minute
+    private lazy var minuteLabel: UILabel = {
+        let label = UILabel()
+        let atributeString = NSMutableAttributedString(string: "2 min")
+        atributeString.underline(subString: "2 min", style: .single)
+        
+        label.attributedText = atributeString
+        label.textColor = .labelColorr
+        label.font = UIFont(name: "Montserrat-SemiBold", size: 13)
+        label.numberOfLines = 0
+        
+        return label
+    }()
+    
+    ///Button Question
+    private lazy var questionButtonTwo: UIButton = {
+        var config = UIButton.Configuration.plain()
+        
+        let originalImage = UIImage(systemName: "questionmark.circle")
+        let resizedImage = originalImage?.resized(to: CGSize(width: 18, height: 18))
+        let tintColorImage = resizedImage?.withTintColor(.gray, renderingMode: .alwaysOriginal)
+        
+        config.image = tintColorImage
+        config.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+        let button = UIButton(configuration: config)
+        
+        return button
+    }()
+    
+    ///StackView Fruquecy, Question
+    private lazy var fruquecyQuestionStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        
+        stackView.addArrangedSubview(frequencyLabel)
+        stackView.addArrangedSubview(timeWeekLabel)
+        stackView.addArrangedSubview(questionButtonOne)
+        
+        return stackView
+    }()
+    
+    ///StackView Duration, Minute
+    private lazy var durationMinuteStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        
+        stackView.addArrangedSubview(durationLabel)
+        stackView.addArrangedSubview(minuteLabel)
+        stackView.addArrangedSubview(questionButtonTwo)
+        
+        return stackView
+    }()
+    
+    ///StackView  Frequency, Duration
+    private lazy var fruquencyDurationStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.distribution = .equalSpacing
+        stackView.spacing = -90
+        
+        stackView.addArrangedSubview(fruquecyQuestionStackView)
+        //stackView.addArrangedSubview(lineLabel)
+        stackView.addArrangedSubview(durationMinuteStackView)
+        
+        return stackView
+    }()
+    
+    ///StackView Main
     private lazy var dropDownAndTitleStackViewMain: UIStackView = {
         let stackView = UIStackView()
         stackView.alignment = .fill
         stackView.distribution = .equalSpacing
         stackView.axis = .vertical
+        //stackView.spacing = 10
         
         stackView.addArrangedSubview(titleMain)
         stackView.addArrangedSubview(accountLinkTextField)
         stackView.addArrangedSubview(dropDownsStackView)
+        stackView.addArrangedSubview(fruquencyDurationStackView)
         
         return stackView
     }()
+    
+    //MARK: - UICollectionView
+//    private lazy var collectionView: UICollectionView = {
+//        let layout = UICollectionViewFlowLayout()
+//        
+//    }()
+    
+  
     
     //MARK:  - ViewDidLoad
     override func viewDidLoad() {
@@ -264,6 +394,12 @@ final class HomeViewController: UIViewController {
         presenter?.view = self //Инициализируете HomePresenter в HomeViewController и устанавливаете его view как self, чтобы Presenter мог взаимодействовать с HomeViewController.
         
         view.addSubview(dropDownTableView)
+        
+        //Hide Keyboard
+        accountLinkTextField.delegate = self
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        tapGesture.cancelsTouchesInView = false //No block tap
+        view.addGestureRecognizer(tapGesture)
     }
     
     //MARK: - Objc
@@ -272,14 +408,18 @@ final class HomeViewController: UIViewController {
     }
     
     @objc private func tapDropDownCategory() {
-        toggleDropDownMenu()
+        presenter?.didTapDropDownCategory()
+    }
+    
+    @objc private func hideKeyboard() {
+        accountLinkTextField.resignFirstResponder()
     }
     
     private func toggleDropDownMenu() {
         dropDownTableView.isHidden.toggle()
         updateDropDownTableViewConstraints()
     }
-
+    
     private func updateDropDownTableViewConstraints() {
         dropDownTableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -314,7 +454,7 @@ private extension HomeViewController {
             dropDownAndTitleStackViewMain.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
             dropDownAndTitleStackViewMain.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
             
-            dropDownAndTitleStackViewMain.heightAnchor.constraint(equalToConstant: 140)
+            dropDownAndTitleStackViewMain.heightAnchor.constraint(equalToConstant: 180) //потом умеши
         ])
     }
 }
@@ -328,11 +468,18 @@ extension HomeViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         cell.backgroundColor = .viewColorr
-        cell.tintColor = .white
         cell.textLabel?.text = options[indexPath.row]
+        cell.textLabel?.textColor = .white
+        
         cell.textLabel?.font = UIFont(name: "Montserrat-SemiBold", size: 13)
         
         return cell
+    }
+}
+
+extension HomeViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -341,8 +488,12 @@ extension HomeViewController: UITableViewDataSource {
     }
 }
 
-extension HomeViewController: UITableViewDelegate {
-    
+//MARK: - Hide Keyboard Return
+extension HomeViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
 }
 
 //MARK: - UIImage Change
