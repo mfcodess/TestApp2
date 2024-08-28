@@ -21,6 +21,7 @@
 		A663A8292C7B16F100DE6F1B /* HashtagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A663A8282C7B16F100DE6F1B /* HashtagsViewController.swift */; };
 		A663A82B2C7B170C00DE6F1B /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A663A82A2C7B170C00DE6F1B /* MenuViewController.swift */; };
 		A663A82F2C7B173800DE6F1B /* VideoToScriptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A663A82E2C7B173800DE6F1B /* VideoToScriptViewController.swift */; };
+		A67BAADF2C7F136D00F206BE /* CustomViewTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67BAADE2C7F136D00F206BE /* CustomViewTime.swift */; };
 		A67FF7572C7C59A3008D6BF3 /* NSMutableAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = A67FF7562C7C59A2008D6BF3 /* NSMutableAttributedString.swift */; };
 		A67FF7952C7C92D6008D6BF3 /* Montserrat-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A67FF77D2C7C92D6008D6BF3 /* Montserrat-Black.ttf */; };
 		A67FF7962C7C92D6008D6BF3 /* Montserrat-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A67FF77E2C7C92D6008D6BF3 /* Montserrat-BlackItalic.ttf */; };
@@ -63,6 +64,7 @@
 		A663A8282C7B16F100DE6F1B /* HashtagsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashtagsViewController.swift; sourceTree = "<group>"; };
 		A663A82A2C7B170C00DE6F1B /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		A663A82E2C7B173800DE6F1B /* VideoToScriptViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoToScriptViewController.swift; sourceTree = "<group>"; };
+		A67BAADE2C7F136D00F206BE /* CustomViewTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViewTime.swift; sourceTree = "<group>"; };
 		A67FF7562C7C59A2008D6BF3 /* NSMutableAttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSMutableAttributedString.swift; sourceTree = "<group>"; };
 		A67FF77D2C7C92D6008D6BF3 /* Montserrat-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Black.ttf"; sourceTree = "<group>"; };
 		A67FF77E2C7C92D6008D6BF3 /* Montserrat-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-BlackItalic.ttf"; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 			children = (
 				A63851C42C7CC8D900A2381E /* HomeViewController.swift */,
 				A61F77A62C7E447000D24200 /* CustomCell.swift */,
+				A67BAADE2C7F136D00F206BE /* CustomViewTime.swift */,
 			);
 			path = ViewHomeScreen;
 			sourceTree = "<group>";
@@ -338,6 +341,7 @@
 				A663A82B2C7B170C00DE6F1B /* MenuViewController.swift in Sources */,
 				A63851C32C7CC89400A2381E /* ScheduleModel.swift in Sources */,
 				A63851BD2C7CC76C00A2381E /* CountryModel.swift in Sources */,
+				A67BAADF2C7F136D00F206BE /* CustomViewTime.swift in Sources */,
 				A63851BF2C7CC77C00A2381E /* CategoryModel.swift in Sources */,
 				A663A8202C7A5BCC00DE6F1B /* TabBarViewController.swift in Sources */,
 				A663A80A2C7A516E00DE6F1B /* AppDelegate.swift in Sources */,

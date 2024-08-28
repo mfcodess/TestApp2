@@ -9,21 +9,26 @@ import UIKit
 
 class CustomCell: UICollectionViewCell {
     
-    let mouth = UILabel()
+    let time = UILabel()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        addSubview(mouth)
-        
-        mouth.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            mouth.centerXAnchor.constraint(equalTo: centerXAnchor),
-            mouth.centerYAnchor.constraint(equalTo: centerYAnchor),
-               ])
+        contentView.addSubview(time)
+        createMonthConstrains()
     }
     
     required init?(coder: NSCoder) {
-        fatalError("Error")
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func createMonthConstrains() {
+        time.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            time.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            time.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+        ])
     }
 }
+
+

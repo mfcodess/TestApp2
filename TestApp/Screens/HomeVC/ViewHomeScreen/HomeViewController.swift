@@ -16,8 +16,8 @@ final class HomeViewController: UIViewController {
     //MARK: Example Country
     let options = ["🇺🇦 Ukraine", "🇯🇵 Japan", "🇨🇿 Czech", "🇫🇷 France", "🇺🇸 United States"]
     let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-    let times = ["5 am", "9 am", "11 am", "3 pm", "6 pm"]
-
+    let times = ["", "", "", "", "", "", ""]
+    
     
     ///Home
     private lazy var homeGromusButton: UIButton = {
@@ -123,7 +123,7 @@ final class HomeViewController: UIViewController {
         textField.borderStyle = .none
         textField.layer.borderColor = UIColor.black.cgColor
         textField.layer.borderWidth = 0.3
-        textField.layer.cornerRadius = 16
+        textField.layer.cornerRadius = 20
         textField.backgroundColor = .tableViewColorr
         textField.textColor = .black
         textField.font = UIFont(name: "Montserrat-SemiBold", size: 13)
@@ -167,8 +167,8 @@ final class HomeViewController: UIViewController {
         
         let button = UIButton(configuration: config)
         button.layer.borderColor = UIColor.gray.cgColor
-        button.layer.borderWidth = 0.2
-        button.layer.cornerRadius = 15
+        button.layer.borderWidth = 0.3
+        button.layer.cornerRadius = 16
         button.tintColor = .white
         button.addTarget(self, action: #selector(tapDropDownCountry), for: .touchUpInside)
         
@@ -199,8 +199,8 @@ final class HomeViewController: UIViewController {
         
         let button = UIButton(configuration: config)
         button.layer.borderColor = UIColor.gray.cgColor
-        button.layer.borderWidth = 0.2
-        button.layer.cornerRadius = 15
+        button.layer.borderWidth = 0.3
+        button.layer.cornerRadius = 16
         button.tintColor = .white
         button.addTarget(self, action: #selector(tapDropDownCategory), for: .touchUpInside)
         
@@ -213,7 +213,7 @@ final class HomeViewController: UIViewController {
         tableViewDropDown.dataSource = self
         tableViewDropDown.delegate = self
         tableViewDropDown.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        tableViewDropDown.backgroundColor = .viewColorr
+        tableViewDropDown.backgroundColor = .navigationTabBar
         
         tableViewDropDown.tintColor = .black
         tableViewDropDown.layer.cornerRadius = 20
@@ -370,13 +370,116 @@ final class HomeViewController: UIViewController {
         return stackView
     }()
     
-    //MARK: - UICollectionView
-//    private lazy var collectionView: UICollectionView = {
-//        let layout = UICollectionViewFlowLayout()
-//        
-//    }()
     
-  
+    
+    
+    
+    
+    
+    
+    
+    //MARK: - UICollectionView
+    
+    ///Days
+    private lazy var collectionViewDays: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumInteritemSpacing = 0
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        
+        collectionView.register(CustomCell.self, forCellWithReuseIdentifier: "cell")
+        
+        return collectionView
+    }()
+    
+    ///Time
+    private lazy var collectionViewTime: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumInteritemSpacing = 0
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        
+        collectionView.register(CustomCell.self, forCellWithReuseIdentifier: "cell")
+        
+        return collectionView
+    }()
+    
+    ///StackView Days, Time
+    private lazy var collectionViewDaysAndTimeStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.distribution = .equalSpacing
+        
+        stackView.addArrangedSubview(collectionViewDays)
+        stackView.addArrangedSubview(collectionViewTime)
+
+        
+        return stackView
+    }()
+    
+    ///Image Notification
+    private lazy var activateNotificationImage: UIButton = {
+        var config = UIButton.Configuration.plain()
+        
+        let originalImage = UIImage(named: "EmailImage")
+        let resizedImage = originalImage?.resized(to: CGSize(width: 18, height: 18))
+        let tintColorImage = resizedImage?.withTintColor(.white, renderingMode: .alwaysOriginal)
+        
+        config.image = tintColorImage
+        config.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+        let button = UIButton(configuration: config)
+        
+        return button
+    }()
+    
+    ///Label Notification
+    private lazy var notificationLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Activate notifications"
+        label.textColor = .white
+        label.font = UIFont(name: "Montserrat-SemiBold", size: 13)
+        label.numberOfLines = 0
+        
+        return label
+    }()
+    
+    /// StackView Notification Image, Label
+    private lazy var notificationImageAndLabelStackView: UIStackView = {
+    let stackView = UIStackView()
+    stackView.axis = .horizontal
+        stackView.spacing = 10
+        stackView.alignment = .center
+    stackView.addArrangedSubview(activateNotificationImage)
+    stackView.addArrangedSubview(notificationLabel)
+
+    return stackView
+}()
+    
+    ///Button Notification
+    private lazy var activateNotificationButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .navigationTabBar
+        button.layer.cornerRadius = 20
+        
+        button.addSubview(notificationImageAndLabelStackView)
+        
+        notificationImageAndLabelStackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            notificationImageAndLabelStackView.topAnchor.constraint(equalTo: button.topAnchor),
+            notificationImageAndLabelStackView.trailingAnchor.constraint(equalTo: button.trailingAnchor, constant: -60),
+            notificationImageAndLabelStackView.leadingAnchor.constraint(equalTo: button.leadingAnchor, constant: 90),
+            notificationImageAndLabelStackView.bottomAnchor.constraint(equalTo: button.bottomAnchor),
+            
+            button.heightAnchor.constraint(equalToConstant: 40)
+        ])
+        
+        return button
+    }()
+    
     
     //MARK:  - ViewDidLoad
     override func viewDidLoad() {
@@ -386,7 +489,9 @@ final class HomeViewController: UIViewController {
         
         view.addSubview(navigationBarStackViewMain)
         createNavigationBarStackViewMainConstrains()
-        
+       
+        view.addSubview(collectionViewDaysAndTimeStackView)
+        createCollectionViewStackViewContraints()
         view.addSubview(dropDownAndTitleStackViewMain)
         createDropDownAndTitleAndTableViewStackView()
         
@@ -400,6 +505,12 @@ final class HomeViewController: UIViewController {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         tapGesture.cancelsTouchesInView = false //No block tap
         view.addGestureRecognizer(tapGesture)
+        
+        
+        
+        view.addSubview(activateNotificationButton)
+        createActivateNotificationButtonConstrains()
+        
     }
     
     //MARK: - Objc
@@ -426,7 +537,7 @@ final class HomeViewController: UIViewController {
             dropDownTableView.topAnchor.constraint(equalTo: dropDownsStackView.bottomAnchor),
             dropDownTableView.leadingAnchor.constraint(equalTo: dropDownsStackView.leadingAnchor),
             dropDownTableView.trailingAnchor.constraint(equalTo: dropDownsStackView.trailingAnchor, constant: -180),
-            dropDownTableView.heightAnchor.constraint(equalToConstant: 100)
+            dropDownTableView.heightAnchor.constraint(equalToConstant: 130)
         ])
     }
 }
@@ -457,6 +568,59 @@ private extension HomeViewController {
             dropDownAndTitleStackViewMain.heightAnchor.constraint(equalToConstant: 180) //потом умеши
         ])
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    //MARK: - UICollection Constrains
+
+    
+    
+    private func createCollectionViewStackViewContraints() {
+        collectionViewDaysAndTimeStackView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            collectionViewDaysAndTimeStackView.topAnchor.constraint(equalTo: navigationBarStackViewMain.bottomAnchor , constant: 210),
+            collectionViewDaysAndTimeStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
+            collectionViewDaysAndTimeStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
+            
+            collectionViewDays.heightAnchor.constraint(equalToConstant: 35),
+            //collectionViewTime.heightAnchor.constraint(equalToConstant: 250),
+            
+
+            
+        ])
+    }
+    
+    
+    
+    
+    private func createActivateNotificationButtonConstrains() {
+        activateNotificationButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            activateNotificationButton.topAnchor.constraint(equalTo: collectionViewDaysAndTimeStackView.bottomAnchor, constant: 12),
+            activateNotificationButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
+            activateNotificationButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
+            activateNotificationButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,  constant: -12)
+        ])
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
 
 //MARK: - UITableView Dropdown menu
@@ -467,7 +631,7 @@ extension HomeViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.backgroundColor = .viewColorr
+        cell.backgroundColor = .navigationTabBar
         cell.textLabel?.text = options[indexPath.row]
         cell.textLabel?.textColor = .white
         
@@ -488,35 +652,217 @@ extension HomeViewController: UITableViewDelegate {
     }
 }
 
-//MARK: - Hide Keyboard Return
-extension HomeViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
+//MARK: - UICollectionView
+extension HomeViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if collectionView == collectionViewDays {
+            return days.count
+        } else {
+            return times.count
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? CustomCell else {
+            return UICollectionViewCell()
+        }
+        
+        cell.backgroundColor = .navigationTabBar
+        cell.time.textColor = .white
+        cell.time.font = UIFont(name: "Montserrat-SemiBold", size: 12)
+        
+        if collectionView == collectionViewDays {
+            cell.time.text = days[indexPath.row]
+        } else {
+            cell.time.text = times[indexPath.row]
+        }
+        
+        //View + Label = Constains
+        switch indexPath.row {
+        case 0:
+            let customView = CustomViewTime()
+            
+            if collectionView == collectionViewTime {
+                cell.contentView.addSubview(customView)
+                customView.label.text = "5 am"
+                customView.translatesAutoresizingMaskIntoConstraints = false
+                NSLayoutConstraint.activate([
+                    customView.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
+                    customView.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor),
+                    customView.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor),
+                    customView.heightAnchor.constraint(equalToConstant: 40)
+                ])
+            }
+        case 1:
+            let customView = CustomViewTime()
+            
+            if collectionView == collectionViewTime {
+                cell.contentView.addSubview(customView)
+                customView.label.text = "6 am"
+                customView.translatesAutoresizingMaskIntoConstraints = false
+                NSLayoutConstraint.activate([
+                    customView.topAnchor.constraint(equalTo: cell.contentView.topAnchor, constant: 60),
+                    customView.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor),
+                    customView.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor),
+                    customView.heightAnchor.constraint(equalToConstant: 40)
+                ])
+            }
+        case 2:
+            let customView = CustomViewTime()
+            
+            if collectionView == collectionViewTime {
+                cell.contentView.addSubview(customView)
+                customView.label.text = "7 pm"
+                customView.translatesAutoresizingMaskIntoConstraints = false
+                NSLayoutConstraint.activate([
+                    customView.topAnchor.constraint(equalTo: cell.contentView.topAnchor, constant: 220),
+                    customView.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor),
+                    customView.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor),
+                    customView.heightAnchor.constraint(equalToConstant: 40)
+                ])
+            }
+        case 3:
+            let customView = CustomViewTime()
+            
+            if collectionView == collectionViewTime {
+                cell.contentView.addSubview(customView)
+                customView.label.text = "7 am"
+                customView.translatesAutoresizingMaskIntoConstraints = false
+                NSLayoutConstraint.activate([
+                    customView.topAnchor.constraint(equalTo: cell.contentView.topAnchor, constant: 120),
+                    customView.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor),
+                    customView.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor),
+                    customView.heightAnchor.constraint(equalToConstant: 40)
+                ])
+            }
+        case 4:
+            let customView = CustomViewTime()
+            
+            if collectionView == collectionViewTime {
+                cell.contentView.addSubview(customView)
+                customView.label.text = "6 pm"
+                customView.translatesAutoresizingMaskIntoConstraints = false
+                NSLayoutConstraint.activate([
+                    customView.topAnchor.constraint(equalTo: cell.contentView.topAnchor, constant: 285),
+                    customView.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor),
+                    customView.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor),
+                    customView.heightAnchor.constraint(equalToConstant: 40)
+                ])
+            }
+        case 5:
+            let customView = CustomViewTime()
+            
+            if collectionView == collectionViewTime {
+                cell.contentView.addSubview(customView)
+                customView.label.text = "5 am"
+                customView.translatesAutoresizingMaskIntoConstraints = false
+                NSLayoutConstraint.activate([
+                    customView.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
+                    customView.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor),
+                    customView.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor),
+                    customView.heightAnchor.constraint(equalToConstant: 40)
+                ])
+            }
+        case 6:
+            let customView = CustomViewTime()
+            
+            if collectionView == collectionViewTime {
+                cell.contentView.addSubview(customView)
+                customView.label.text = "9 am"
+                customView.translatesAutoresizingMaskIntoConstraints = false
+                NSLayoutConstraint.activate([
+                    customView.topAnchor.constraint(equalTo: cell.contentView.topAnchor, constant: 170),
+                    customView.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor),
+                    customView.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor),
+                    customView.heightAnchor.constraint(equalToConstant: 40)
+                ])
+            }
+        default:
+            break
+        }
+        
+        if indexPath.row == 5 && collectionView == collectionViewDays {
+            let view = UIView()
+            view.backgroundColor = .collectionViewBlue
+            view.alpha = 0.2
+            
+            view.backgroundColor = collectionView == collectionViewDays ? .collectionViewBlue : .collectionViewBlue
+            view.alpha = 0.2
+            
+            cell.time.textColor = collectionView == collectionViewDays ? .collectionViewBlue : .collectionViewBlue
+            cell.contentView.addSubview(view)
+            
+            view.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                view.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
+                view.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor),
+                view.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor),
+                view.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor),
+            ])
+        } else if indexPath.row == 6 && collectionView == collectionViewDays {
+            let view = UIView()
+            view.backgroundColor = collectionView == collectionViewDays ? .collectionViewRed : .collectionViewRed
+            view.alpha = 0.2
+            view.frame = cell.contentView.bounds
+            cell.time.textColor = collectionView == collectionViewDays ? .collectionViewRed : .collectionViewRed
+            cell.contentView.addSubview(view)
+        }
+        
+        return cell
     }
 }
 
-//MARK: - UIImage Change
-extension UIImage {
-    func resized(to targetSize: CGSize) -> UIImage? {
-        let size = self.size
-        let widthRatio  = targetSize.width  / size.width
-        let heightRatio = targetSize.height / size.height
-        let scaleFactor = min(widthRatio, heightRatio)
+extension HomeViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        let newSize = CGSize(width: size.width * scaleFactor, height: size.height * scaleFactor)
-        let rect = CGRect(origin: .zero, size: newSize)
-        
-        UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0)
-        self.draw(in: rect)
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return newImage
+        if collectionView == collectionViewDays {
+            let width = (collectionView.bounds.width - 10) / 7
+            return CGSize(width: width, height: 36)
+        } else {
+            let width = (collectionView.bounds.width - 10) / 7
+            return CGSize(width: width, height: 350)
+        }
     }
 }
-
-#Preview {
-    HomeViewController()
-}
-
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    //MARK: - Hide Keyboard Return
+    extension HomeViewController: UITextFieldDelegate {
+        func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+            textField.resignFirstResponder()
+            return true
+        }
+    }
+    
+    //MARK: - UIImage Change
+    extension UIImage {
+        func resized(to targetSize: CGSize) -> UIImage? {
+            let size = self.size
+            let widthRatio  = targetSize.width  / size.width
+            let heightRatio = targetSize.height / size.height
+            let scaleFactor = min(widthRatio, heightRatio)
+            
+            let newSize = CGSize(width: size.width * scaleFactor, height: size.height * scaleFactor)
+            let rect = CGRect(origin: .zero, size: newSize)
+            
+            UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0)
+            self.draw(in: rect)
+            let newImage = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            
+            return newImage
+        }
+    }
+    
+    #Preview {
+        HomeViewController()
+    }
+    
