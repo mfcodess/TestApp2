@@ -372,12 +372,6 @@ final class HomeViewController: UIViewController {
     
     
     
-    
-    
-    
-    
-    
-    
     //MARK: - UICollectionView
     
     ///Days
@@ -571,14 +565,6 @@ private extension HomeViewController {
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
     //MARK: - UICollection Constrains
 
     
@@ -593,14 +579,9 @@ private extension HomeViewController {
             
             collectionViewDays.heightAnchor.constraint(equalToConstant: 35),
             //collectionViewTime.heightAnchor.constraint(equalToConstant: 250),
-            
 
-            
         ])
     }
-    
-    
-    
     
     private func createActivateNotificationButtonConstrains() {
         activateNotificationButton.translatesAutoresizingMaskIntoConstraints = false
@@ -613,13 +594,7 @@ private extension HomeViewController {
     }
     
     
-    
-    
-    
-    
-    
-    
-    
+
     
 }
 
