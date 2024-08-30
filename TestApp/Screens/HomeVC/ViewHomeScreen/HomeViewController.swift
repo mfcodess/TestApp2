@@ -18,7 +18,6 @@ final class HomeViewController: UIViewController {
     let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
     let times = ["", "", "", "", "", "", ""]
     
-    
     ///Home
     private lazy var homeGromusButton: UIButton = {
         let button = UIButton(type: .system)
@@ -105,10 +104,15 @@ final class HomeViewController: UIViewController {
     ///Title
     private lazy var titleMain: UILabel = {
         let label = UILabel()
-        label.text = "AI Recommendations on times and days for posting sounds in this month in your country"
+        let atributeString = NSMutableAttributedString(string: "AI Recommendations on times and days for posting sounds in this month in your country")
+        
+        atributeString.setTextColor(color: UIColor.labelColorr, toSubstring: "this month")
+        atributeString.setTextColor(color: UIColor.labelColorr, toSubstring: "your country")
+        
+        
+        label.attributedText = atributeString
         label.font = UIFont(name: "Montserrat-SemiBold", size: 15)
         label.numberOfLines = 0
-        label.textColor = .white
         
         return label
     }()
@@ -410,7 +414,7 @@ final class HomeViewController: UIViewController {
         
         stackView.addArrangedSubview(collectionViewDays)
         stackView.addArrangedSubview(collectionViewTime)
-
+        
         
         return stackView
     }()
@@ -443,15 +447,15 @@ final class HomeViewController: UIViewController {
     
     /// StackView Notification Image, Label
     private lazy var notificationImageAndLabelStackView: UIStackView = {
-    let stackView = UIStackView()
-    stackView.axis = .horizontal
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
         stackView.spacing = 10
         stackView.alignment = .center
-    stackView.addArrangedSubview(activateNotificationImage)
-    stackView.addArrangedSubview(notificationLabel)
-
-    return stackView
-}()
+        stackView.addArrangedSubview(activateNotificationImage)
+        stackView.addArrangedSubview(notificationLabel)
+        
+        return stackView
+    }()
     
     ///Button Notification
     private lazy var activateNotificationButton: UIButton = {
@@ -483,9 +487,10 @@ final class HomeViewController: UIViewController {
         
         view.addSubview(navigationBarStackViewMain)
         createNavigationBarStackViewMainConstrains()
-       
+        
         view.addSubview(collectionViewDaysAndTimeStackView)
         createCollectionViewStackViewContraints()
+        
         view.addSubview(dropDownAndTitleStackViewMain)
         createDropDownAndTitleAndTableViewStackView()
         
@@ -500,11 +505,8 @@ final class HomeViewController: UIViewController {
         tapGesture.cancelsTouchesInView = false //No block tap
         view.addGestureRecognizer(tapGesture)
         
-        
-        
         view.addSubview(activateNotificationButton)
         createActivateNotificationButtonConstrains()
-        
     }
     
     //MARK: - Objc
@@ -563,15 +565,10 @@ private extension HomeViewController {
         ])
     }
     
-    
-    
     //MARK: - UICollection Constrains
-
-    
-    
     private func createCollectionViewStackViewContraints() {
         collectionViewDaysAndTimeStackView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         NSLayoutConstraint.activate([
             collectionViewDaysAndTimeStackView.topAnchor.constraint(equalTo: navigationBarStackViewMain.bottomAnchor , constant: 210),
             collectionViewDaysAndTimeStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
@@ -579,7 +576,7 @@ private extension HomeViewController {
             
             collectionViewDays.heightAnchor.constraint(equalToConstant: 35),
             //collectionViewTime.heightAnchor.constraint(equalToConstant: 250),
-
+            
         ])
     }
     
@@ -592,10 +589,6 @@ private extension HomeViewController {
             activateNotificationButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,  constant: -12)
         ])
     }
-    
-    
-
-    
 }
 
 //MARK: - UITableView Dropdown menu
@@ -799,45 +792,36 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
         }
     }
 }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //MARK: - Hide Keyboard Return
-    extension HomeViewController: UITextFieldDelegate {
-        func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-            textField.resignFirstResponder()
-            return true
-        }
+
+//MARK: - Hide Keyboard Return
+extension HomeViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
-    
-    //MARK: - UIImage Change
-    extension UIImage {
-        func resized(to targetSize: CGSize) -> UIImage? {
-            let size = self.size
-            let widthRatio  = targetSize.width  / size.width
-            let heightRatio = targetSize.height / size.height
-            let scaleFactor = min(widthRatio, heightRatio)
-            
-            let newSize = CGSize(width: size.width * scaleFactor, height: size.height * scaleFactor)
-            let rect = CGRect(origin: .zero, size: newSize)
-            
-            UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0)
-            self.draw(in: rect)
-            let newImage = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            
-            return newImage
-        }
+}
+
+//MARK: - UIImage Change
+extension UIImage {
+    func resized(to targetSize: CGSize) -> UIImage? {
+        let size = self.size
+        let widthRatio  = targetSize.width  / size.width
+        let heightRatio = targetSize.height / size.height
+        let scaleFactor = min(widthRatio, heightRatio)
+        
+        let newSize = CGSize(width: size.width * scaleFactor, height: size.height * scaleFactor)
+        let rect = CGRect(origin: .zero, size: newSize)
+        
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0)
+        self.draw(in: rect)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage
     }
-    
-    #Preview {
-        HomeViewController()
-    }
-    
+}
+
+#Preview {
+    HomeViewController()
+}
+

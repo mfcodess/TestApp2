@@ -1,3 +1,11 @@
+//
+//  ScheduleModel.swift
+//  TestApp
+//
+//  Created by Max on 26.08.2024.
+//
+
+
 import UIKit
 
 class CustomViewTime: UIView {
@@ -20,7 +28,7 @@ class CustomViewTime: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
-        
+
     }
     
     required init?(coder: NSCoder) {

@@ -73,12 +73,12 @@ private extension TabBarViewController {
         
         let iconAppearance = UITabBarItemAppearance()
         iconAppearance.normal.iconColor = .navigationTabBarColorIcons
-        iconAppearance.selected.iconColor = .white
+        iconAppearance.selected.iconColor = .labelColorr
         iconAppearance.normal.titleTextAttributes = [
             NSAttributedString.Key.foregroundColor: UIColor.navigationTabBarColorIcons
         ]
         iconAppearance.selected.titleTextAttributes = [
-            NSAttributedString.Key.foregroundColor: UIColor.white
+            NSAttributedString.Key.foregroundColor: UIColor.labelColorr
         ]
         
         appearance.stackedLayoutAppearance = iconAppearance
