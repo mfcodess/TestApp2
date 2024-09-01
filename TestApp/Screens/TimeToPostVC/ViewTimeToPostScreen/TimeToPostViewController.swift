@@ -13,9 +13,13 @@ final class TimeToPostViewController: UIViewController {
     //MARK: Presenter
     private var presenter: TimeToPostPresenter?
     
+    
+    //private var IS LOADING = false
+    // хайт LOADING
     //MARK: Example Country
-    let country = ["🇺🇦 Ukraine", "🇯🇵 Japan", "🇨🇿 Czech", "🇫🇷 France", "🇺🇸 United States", "🇩🇪 Germany", "🇪🇸 Spain"]
-    let category = ["Advertisement", "Babies", "Beauty", "Business & Finance", "Campus Life", "Cars", "Cooking"]
+    private var country: [CountryModel] = []
+    private var category: [CategoryModel] = []
+    
     let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
     let times = ["", "", "", "", "", "", ""]
     
@@ -423,6 +427,7 @@ final class TimeToPostViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.isScrollEnabled = false
         
         collectionView.register(CustomCell.self, forCellWithReuseIdentifier: "cell")
         
@@ -437,6 +442,7 @@ final class TimeToPostViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.isScrollEnabled = false
         
         collectionView.register(CustomCell.self, forCellWithReuseIdentifier: "cell")
         
@@ -515,6 +521,14 @@ final class TimeToPostViewController: UIViewController {
         return button
     }()
     
+    private func updateUI() {
+        // Получение данных из презентера
+        country = presenter?.getCountries() ?? []
+        category = presenter?.getCategory() ?? []
+        // Здесь можно обновить UI с полученными данными
+        // Например, обновить таблицу или другие элементы интерфейса
+    }
+    
     
     //MARK:  - ViewDidLoad
     override func viewDidLoad() {
@@ -531,8 +545,19 @@ final class TimeToPostViewController: UIViewController {
         view.addSubview(dropDownAndTitleStackViewMain)
         createDropDownAndTitleAndTableViewStackView()
         
+        /*
+         •    private var presenter: TimeToPostPresenter?: Это как пустая коробка, которая может содержать объект.
+         •    presenter = TimeToPostPresenter(): Это как заполнение коробки конкретным объектом.
+
+     Сначала коробка пустая, а потом мы кладём в неё что-то конкретное.
+        */
         presenter = TimeToPostPresenter() //presenter = HomePresenter() создаёт этот объект, чтобы HomeViewController мог взаимодействовать с ним.
-        presenter?.view = self //Инициализируете HomePresenter в HomeViewController и устанавливаете его view как self, чтобы Presenter мог взаимодействовать с HomeViewController.
+        
+        //presenter?.view = self позволяет презентеру работать с вашим контроллером. Это нужно, чтобы презентер мог обновлять интерфейс или получать данные из вашего контроллера.
+        
+        //Прямо после создания презентера (presenter = TimeToPostPresenter()), он ещё не знает о вашем контроллере. presenter?.view = self связывает презентер с вашим контроллером, чтобы он мог взаимодействовать с ним.
+        presenter?.view = self
+        updateUI()
         
         view.addSubview(dropDownCountryTableView)
         view.addSubview(dropDownCategoryTableView)
@@ -678,9 +703,9 @@ extension TimeToPostViewController: UITableViewDataSource {
         cell.contentView.backgroundColor = .navigationTabBar
         
         if tableView == dropDownCountryTableView {
-            cell.textLabel?.text = country[indexPath.row]
+            cell.textLabel?.text = country[indexPath.row].name //country[indexPath.row].name — это способ получить имя страны из массива country на основе выбранного индекса.
         } else if tableView == dropDownCategoryTableView {
-            cell.textLabel?.text = category[indexPath.row]
+            cell.textLabel?.text = category[indexPath.row].name
         }
       
         
@@ -704,12 +729,12 @@ extension TimeToPostViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == dropDownCountryTableView {
-            drobButtonCountry.setTitle(country[indexPath.row], for: .normal)
+            drobButtonCountry.setTitle(country[indexPath.row].name, for: .normal)
             dropDownCountryTableView.isHidden = true
             
             
         } else if tableView == dropDownCategoryTableView {
-            drobButtonCategory.setTitle(category[indexPath.row], for: .normal)
+            drobButtonCategory.setTitle(category[indexPath.row].name, for: .normal)
             dropDownCategoryTableView.isHidden = true
         }
       
@@ -756,6 +781,7 @@ extension TimeToPostViewController: UICollectionViewDataSource {
             if collectionView == collectionViewTime {
                 cell.contentView.addSubview(customView)
                 customView.label.text = "5 am" //проверить страну (выюрана категория) Словарь (сохраниене )
+                customView.label.textColor = .black
                 customView.translatesAutoresizingMaskIntoConstraints = false
                 NSLayoutConstraint.activate([
                     customView.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
@@ -770,6 +796,7 @@ extension TimeToPostViewController: UICollectionViewDataSource {
             if collectionView == collectionViewTime {
                 cell.contentView.addSubview(customView)
                 customView.label.text = "6 am"
+                customView.label.textColor = .black
                 customView.translatesAutoresizingMaskIntoConstraints = false
                 NSLayoutConstraint.activate([
                     customView.topAnchor.constraint(equalTo: cell.contentView.topAnchor, constant: 60),
@@ -784,6 +811,7 @@ extension TimeToPostViewController: UICollectionViewDataSource {
             if collectionView == collectionViewTime {
                 cell.contentView.addSubview(customView)
                 customView.label.text = "7 pm"
+                customView.label.textColor = .black
                 customView.translatesAutoresizingMaskIntoConstraints = false
                 NSLayoutConstraint.activate([
                     customView.topAnchor.constraint(equalTo: cell.contentView.topAnchor, constant: 220),
@@ -798,6 +826,7 @@ extension TimeToPostViewController: UICollectionViewDataSource {
             if collectionView == collectionViewTime {
                 cell.contentView.addSubview(customView)
                 customView.label.text = "7 am"
+                customView.label.textColor = .black
                 customView.translatesAutoresizingMaskIntoConstraints = false
                 NSLayoutConstraint.activate([
                     customView.topAnchor.constraint(equalTo: cell.contentView.topAnchor, constant: 120),
@@ -812,9 +841,10 @@ extension TimeToPostViewController: UICollectionViewDataSource {
             if collectionView == collectionViewTime {
                 cell.contentView.addSubview(customView)
                 customView.label.text = "6 pm"
+                customView.label.textColor = .black
                 customView.translatesAutoresizingMaskIntoConstraints = false
                 NSLayoutConstraint.activate([
-                    customView.topAnchor.constraint(equalTo: cell.contentView.topAnchor, constant: 285),
+                    customView.topAnchor.constraint(equalTo: cell.contentView.topAnchor, constant: 280),
                     customView.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor),
                     customView.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor),
                     customView.heightAnchor.constraint(equalToConstant: 40)
@@ -826,6 +856,7 @@ extension TimeToPostViewController: UICollectionViewDataSource {
             if collectionView == collectionViewTime {
                 cell.contentView.addSubview(customView)
                 customView.label.text = "5 am"
+                customView.label.textColor = .black
                 customView.translatesAutoresizingMaskIntoConstraints = false
                 NSLayoutConstraint.activate([
                     customView.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
@@ -840,6 +871,7 @@ extension TimeToPostViewController: UICollectionViewDataSource {
             if collectionView == collectionViewTime {
                 cell.contentView.addSubview(customView)
                 customView.label.text = "9 am"
+                customView.label.textColor = .black
                 customView.translatesAutoresizingMaskIntoConstraints = false
                 NSLayoutConstraint.activate([
                     customView.topAnchor.constraint(equalTo: cell.contentView.topAnchor, constant: 170),

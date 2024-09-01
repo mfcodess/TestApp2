@@ -24,6 +24,7 @@ class HashtagsViewController: UIViewController {
         collectionView.delegate = self
         // collectionView.backgroundColor = .gray
         collectionView.register(CustomCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.isScrollEnabled = false
         
         return collectionView
     }()
@@ -133,6 +134,7 @@ extension HashtagsViewController: UICollectionViewDataSource {
             if collectionView == collectionViewTimes {
                 cell.contentView.addSubview(customView)
                 customView.label.text = "5 am"
+                customView.label.textColor = .black
                 customView.translatesAutoresizingMaskIntoConstraints = false
                 NSLayoutConstraint.activate([
                     customView.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
@@ -147,6 +149,7 @@ extension HashtagsViewController: UICollectionViewDataSource {
             if collectionView == collectionViewTimes {
                 cell.contentView.addSubview(customView)
                 customView.label.text = "6 am"
+                customView.label.textColor = .black
                 customView.translatesAutoresizingMaskIntoConstraints = false
                 NSLayoutConstraint.activate([
                     customView.topAnchor.constraint(equalTo: cell.contentView.topAnchor, constant: 60),
@@ -161,6 +164,7 @@ extension HashtagsViewController: UICollectionViewDataSource {
             if collectionView == collectionViewTimes {
                 cell.contentView.addSubview(customView)
                 customView.label.text = "7 am"
+                customView.label.textColor = .black
                 customView.translatesAutoresizingMaskIntoConstraints = false
                 NSLayoutConstraint.activate([
                     customView.topAnchor.constraint(equalTo: cell.contentView.topAnchor, constant: 120),
@@ -175,6 +179,7 @@ extension HashtagsViewController: UICollectionViewDataSource {
             if collectionView == collectionViewTimes {
                 cell.contentView.addSubview(customView)
                 customView.label.text = "7 am"
+                customView.label.textColor = .black
                 customView.translatesAutoresizingMaskIntoConstraints = false
                 NSLayoutConstraint.activate([
                     customView.topAnchor.constraint(equalTo: cell.contentView.topAnchor, constant: 120),
@@ -189,6 +194,7 @@ extension HashtagsViewController: UICollectionViewDataSource {
             if collectionView == collectionViewTimes {
                 cell.contentView.addSubview(customView)
                 customView.label.text = "6 am"
+                customView.label.textColor = .black
                 customView.translatesAutoresizingMaskIntoConstraints = false
                 NSLayoutConstraint.activate([
                     customView.topAnchor.constraint(equalTo: cell.contentView.topAnchor, constant: 60),
@@ -203,6 +209,7 @@ extension HashtagsViewController: UICollectionViewDataSource {
             if collectionView == collectionViewTimes {
                 cell.contentView.addSubview(customView)
                 customView.label.text = "5 am"
+                customView.label.textColor = .black
                 customView.translatesAutoresizingMaskIntoConstraints = false
                 NSLayoutConstraint.activate([
                     customView.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
