@@ -7,8 +7,8 @@
 
 import Foundation
 
-final class HomePresenter {
-    weak var view: HomeViewController?
+final class TimeToPostPresenter {
+    weak var view: TimeToPostViewController?
     
     func didTapDropDownCountry() {
         print("Tap Country")

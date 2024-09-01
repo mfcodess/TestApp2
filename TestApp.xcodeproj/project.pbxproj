@@ -11,12 +11,12 @@
 		A63851BD2C7CC76C00A2381E /* CountryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63851BC2C7CC76C00A2381E /* CountryModel.swift */; };
 		A63851BF2C7CC77C00A2381E /* CategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63851BE2C7CC77C00A2381E /* CategoryModel.swift */; };
 		A63851C32C7CC89400A2381E /* ScheduleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63851C22C7CC89400A2381E /* ScheduleModel.swift */; };
-		A63851C52C7CC8D900A2381E /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63851C42C7CC8D900A2381E /* HomeViewController.swift */; };
-		A63851C82C7CC90900A2381E /* PresenterHomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63851C72C7CC90900A2381E /* PresenterHomeScreen.swift */; };
+		A63851C52C7CC8D900A2381E /* TimeToPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63851C42C7CC8D900A2381E /* TimeToPostViewController.swift */; };
+		A63851C82C7CC90900A2381E /* PresenterTimeToPostScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63851C72C7CC90900A2381E /* PresenterTimeToPostScreen.swift */; };
 		A663A80A2C7A516E00DE6F1B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A663A8092C7A516E00DE6F1B /* AppDelegate.swift */; };
 		A663A8132C7A517000DE6F1B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A663A8122C7A517000DE6F1B /* Assets.xcassets */; };
 		A663A8162C7A517000DE6F1B /* Base in Resources */ = {isa = PBXBuildFile; fileRef = A663A8152C7A517000DE6F1B /* Base */; };
-		A663A81E2C7A520300DE6F1B /* TimeToPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A663A81D2C7A520300DE6F1B /* TimeToPostViewController.swift */; };
+		A663A81E2C7A520300DE6F1B /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A663A81D2C7A520300DE6F1B /* HomeViewController.swift */; };
 		A663A8202C7A5BCC00DE6F1B /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A663A81F2C7A5BCC00DE6F1B /* TabBarViewController.swift */; };
 		A663A8292C7B16F100DE6F1B /* HashtagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A663A8282C7B16F100DE6F1B /* HashtagsViewController.swift */; };
 		A663A82B2C7B170C00DE6F1B /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A663A82A2C7B170C00DE6F1B /* MenuViewController.swift */; };
@@ -52,14 +52,14 @@
 		A63851BC2C7CC76C00A2381E /* CountryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryModel.swift; sourceTree = "<group>"; };
 		A63851BE2C7CC77C00A2381E /* CategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryModel.swift; sourceTree = "<group>"; };
 		A63851C22C7CC89400A2381E /* ScheduleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleModel.swift; sourceTree = "<group>"; };
-		A63851C42C7CC8D900A2381E /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
-		A63851C72C7CC90900A2381E /* PresenterHomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresenterHomeScreen.swift; sourceTree = "<group>"; };
+		A63851C42C7CC8D900A2381E /* TimeToPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeToPostViewController.swift; sourceTree = "<group>"; };
+		A63851C72C7CC90900A2381E /* PresenterTimeToPostScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresenterTimeToPostScreen.swift; sourceTree = "<group>"; };
 		A663A8062C7A516E00DE6F1B /* TestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A663A8092C7A516E00DE6F1B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A663A8122C7A517000DE6F1B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A663A8152C7A517000DE6F1B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A663A8172C7A517000DE6F1B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A663A81D2C7A520300DE6F1B /* TimeToPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeToPostViewController.swift; sourceTree = "<group>"; };
+		A663A81D2C7A520300DE6F1B /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		A663A81F2C7A5BCC00DE6F1B /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		A663A8282C7B16F100DE6F1B /* HashtagsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashtagsViewController.swift; sourceTree = "<group>"; };
 		A663A82A2C7B170C00DE6F1B /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
@@ -101,42 +101,42 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A63851C02C7CC78200A2381E /* ModelHomeScreen */ = {
+		A63851C02C7CC78200A2381E /* ModelTimeToPostScreen */ = {
 			isa = PBXGroup;
 			children = (
 				A63851BC2C7CC76C00A2381E /* CountryModel.swift */,
 				A63851BE2C7CC77C00A2381E /* CategoryModel.swift */,
 				A63851C22C7CC89400A2381E /* ScheduleModel.swift */,
 			);
-			path = ModelHomeScreen;
+			path = ModelTimeToPostScreen;
 			sourceTree = "<group>";
 		};
-		A63851C12C7CC78F00A2381E /* HomeVC */ = {
+		A63851C12C7CC78F00A2381E /* TimeToPostVC */ = {
 			isa = PBXGroup;
 			children = (
-				A63851C02C7CC78200A2381E /* ModelHomeScreen */,
-				A63851C62C7CC8DD00A2381E /* ViewHomeScreen */,
-				A63851C92C7CC90C00A2381E /* PresenterHomeScreen */,
+				A63851C02C7CC78200A2381E /* ModelTimeToPostScreen */,
+				A63851C62C7CC8DD00A2381E /* ViewTimeToPostScreen */,
+				A63851C92C7CC90C00A2381E /* PresenterTimeToPostScreen */,
 			);
-			path = HomeVC;
+			path = TimeToPostVC;
 			sourceTree = "<group>";
 		};
-		A63851C62C7CC8DD00A2381E /* ViewHomeScreen */ = {
+		A63851C62C7CC8DD00A2381E /* ViewTimeToPostScreen */ = {
 			isa = PBXGroup;
 			children = (
-				A63851C42C7CC8D900A2381E /* HomeViewController.swift */,
+				A63851C42C7CC8D900A2381E /* TimeToPostViewController.swift */,
 				A61F77A62C7E447000D24200 /* CustomCell.swift */,
 				A67BAADE2C7F136D00F206BE /* CustomViewTime.swift */,
 			);
-			path = ViewHomeScreen;
+			path = ViewTimeToPostScreen;
 			sourceTree = "<group>";
 		};
-		A63851C92C7CC90C00A2381E /* PresenterHomeScreen */ = {
+		A63851C92C7CC90C00A2381E /* PresenterTimeToPostScreen */ = {
 			isa = PBXGroup;
 			children = (
-				A63851C72C7CC90900A2381E /* PresenterHomeScreen.swift */,
+				A63851C72C7CC90900A2381E /* PresenterTimeToPostScreen.swift */,
 			);
-			path = PresenterHomeScreen;
+			path = PresenterTimeToPostScreen;
 			sourceTree = "<group>";
 		};
 		A663A7FD2C7A516E00DE6F1B = {
@@ -181,11 +181,11 @@
 		A663A8302C7B174400DE6F1B /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				A663A81D2C7A520300DE6F1B /* TimeToPostViewController.swift */,
+				A663A81D2C7A520300DE6F1B /* HomeViewController.swift */,
 				A663A82E2C7B173800DE6F1B /* VideoToScriptViewController.swift */,
 				A663A8282C7B16F100DE6F1B /* HashtagsViewController.swift */,
 				A663A82A2C7B170C00DE6F1B /* MenuViewController.swift */,
-				A63851C12C7CC78F00A2381E /* HomeVC */,
+				A63851C12C7CC78F00A2381E /* TimeToPostVC */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -335,9 +335,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A663A81E2C7A520300DE6F1B /* TimeToPostViewController.swift in Sources */,
+				A663A81E2C7A520300DE6F1B /* HomeViewController.swift in Sources */,
 				A61F77A72C7E447000D24200 /* CustomCell.swift in Sources */,
-				A63851C82C7CC90900A2381E /* PresenterHomeScreen.swift in Sources */,
+				A63851C82C7CC90900A2381E /* PresenterTimeToPostScreen.swift in Sources */,
 				A663A82B2C7B170C00DE6F1B /* MenuViewController.swift in Sources */,
 				A63851C32C7CC89400A2381E /* ScheduleModel.swift in Sources */,
 				A63851BD2C7CC76C00A2381E /* CountryModel.swift in Sources */,
@@ -345,7 +345,7 @@
 				A63851BF2C7CC77C00A2381E /* CategoryModel.swift in Sources */,
 				A663A8202C7A5BCC00DE6F1B /* TabBarViewController.swift in Sources */,
 				A663A80A2C7A516E00DE6F1B /* AppDelegate.swift in Sources */,
-				A63851C52C7CC8D900A2381E /* HomeViewController.swift in Sources */,
+				A63851C52C7CC8D900A2381E /* TimeToPostViewController.swift in Sources */,
 				A67FF7572C7C59A3008D6BF3 /* NSMutableAttributedString.swift in Sources */,
 				A663A8292C7B16F100DE6F1B /* HashtagsViewController.swift in Sources */,
 				A663A82F2C7B173800DE6F1B /* VideoToScriptViewController.swift in Sources */,

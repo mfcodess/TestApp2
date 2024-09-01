@@ -7,16 +7,19 @@
 
 import UIKit
 
-final class HomeViewController: UIViewController {
+final class TimeToPostViewController: UIViewController {
     
     //presenter — это ссылка на объект HomePresenter, который обрабатывает логику
     //MARK: Presenter
-    private var presenter: HomePresenter?
+    private var presenter: TimeToPostPresenter?
     
     //MARK: Example Country
-    let options = ["🇺🇦 Ukraine", "🇯🇵 Japan", "🇨🇿 Czech", "🇫🇷 France", "🇺🇸 United States"]
+    let country = ["🇺🇦 Ukraine", "🇯🇵 Japan", "🇨🇿 Czech", "🇫🇷 France", "🇺🇸 United States", "🇩🇪 Germany", "🇪🇸 Spain"]
+    let category = ["Advertisement", "Babies", "Beauty", "Business & Finance", "Campus Life", "Cars", "Cooking"]
     let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
     let times = ["", "", "", "", "", "", ""]
+    
+    private var selectedIndexPath: IndexPath? //создал для храненние выбранной ячейки
     
     ///Home
     private lazy var homeGromusButton: UIButton = {
@@ -109,7 +112,7 @@ final class HomeViewController: UIViewController {
         atributeString.setTextColor(color: UIColor.labelColorr, toSubstring: "this month")
         atributeString.setTextColor(color: UIColor.labelColorr, toSubstring: "your country")
         
-        
+        label.textColor = .white
         label.attributedText = atributeString
         label.font = UIFont(name: "Montserrat-SemiBold", size: 15)
         label.numberOfLines = 0
@@ -125,25 +128,43 @@ final class HomeViewController: UIViewController {
         let textField = UITextField()
         textField.attributedPlaceholder = atrubbutedText
         textField.borderStyle = .none
-        textField.layer.borderColor = UIColor.black.cgColor
+        textField.layer.borderColor = UIColor.gray.cgColor
         textField.layer.borderWidth = 0.3
         textField.layer.cornerRadius = 20
-        textField.backgroundColor = .tableViewColorr
-        textField.textColor = .black
+        textField.backgroundColor = .navigationTabBar
+        textField.textColor = .white
         textField.font = UIFont(name: "Montserrat-SemiBold", size: 13)
+        textField.addTarget(self, action: #selector(tapTextField), for: .touchDown)
+        textField.addTarget(self, action: #selector(endEditingTextField), for: .editingDidEnd)
         
         //Create Button Search
-        let button = UIButton(type: .custom)
-        button.setImage(UIImage(systemName: "magnifyingglass"), for: .normal)
-        button.tintColor = .gray
-        button.frame = CGRect(x: 0, y: 0, width: 50, height: 30)
+        let buttonLeft = UIButton(type: .custom)
+        buttonLeft.setImage(UIImage(systemName: "magnifyingglass"), for: .normal)
+        buttonLeft.tintColor = .labelColorr
+        buttonLeft.frame = CGRect(x: 0, y: 0, width: 50, height: 30)
         
-        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 30))
+        let paddingViewLeft = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 30))
         //paddingView.backgroundColor = .red
-        paddingView.addSubview(button) //inside padding
+        paddingViewLeft.addSubview(buttonLeft) //inside padding
         
-        textField.leftView = paddingView
+        textField.leftView = paddingViewLeft
         textField.leftViewMode = .always
+        
+        
+        let buttonRight = UIButton(type: .custom)
+        buttonRight.addTarget(self, action: #selector(tapButtonRight), for: .touchUpInside)
+        buttonRight.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
+        buttonRight.tintColor = .gray
+        buttonRight.frame = CGRect(x: 0, y: 0, width: 50, height: 30)
+        
+        let paddingViewRight = UIView(frame: CGRect(x: 0, y: 0, width: 50, height: 30))
+        //paddingViewRight.backgroundColor = .red
+        paddingViewRight.addSubview(buttonRight)
+        
+        
+        
+        textField.rightView = paddingViewRight
+        textField.rightViewMode = .whileEditing //`rightViewMode` определяет, когда будет показан вид в правой части текстового поля.
         
         NSLayoutConstraint.activate([
             textField.heightAnchor.constraint(equalToConstant: 40)
@@ -174,6 +195,7 @@ final class HomeViewController: UIViewController {
         button.layer.borderWidth = 0.3
         button.layer.cornerRadius = 16
         button.tintColor = .white
+        button.backgroundColor = .navigationTabBar
         button.addTarget(self, action: #selector(tapDropDownCountry), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
@@ -195,7 +217,7 @@ final class HomeViewController: UIViewController {
         
         //Image
         let originalImage = UIImage(named: "DrobMenu")
-        let resizedImage = originalImage?.resized(to: CGSize(width: 10, height: 10))
+        let resizedImage = originalImage?.resized(to: CGSize(width: 15, height: 10))
         config.image = resizedImage
         
         config.imagePlacement = .trailing
@@ -206,13 +228,28 @@ final class HomeViewController: UIViewController {
         button.layer.borderWidth = 0.3
         button.layer.cornerRadius = 16
         button.tintColor = .white
+        button.backgroundColor = .navigationTabBar
         button.addTarget(self, action: #selector(tapDropDownCategory), for: .touchUpInside)
         
         return button
     }()
     
-    ///TableView
-    private lazy var dropDownTableView: UITableView = {
+    ///TableView Country
+    private lazy var dropDownCountryTableView: UITableView = {
+        let tableViewDropDown = UITableView()
+        tableViewDropDown.dataSource = self
+        tableViewDropDown.delegate = self
+        tableViewDropDown.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableViewDropDown.backgroundColor = .navigationTabBar
+        
+        tableViewDropDown.tintColor = .black
+        tableViewDropDown.layer.cornerRadius = 20
+        
+        return tableViewDropDown
+    }()
+    
+    ///TableView Category
+    private lazy var dropDownCategoryTableView: UITableView = {
         let tableViewDropDown = UITableView()
         tableViewDropDown.dataSource = self
         tableViewDropDown.delegate = self
@@ -269,9 +306,9 @@ final class HomeViewController: UIViewController {
     private lazy var questionButtonOne: UIButton = {
         var config = UIButton.Configuration.plain()
         
-        let originalImage = UIImage(systemName: "questionmark.circle")
+        let originalImage = UIImage(systemName: "questionmark.circle.fill")
         let resizedImage = originalImage?.resized(to: CGSize(width: 18, height: 18))
-        let tintColorImage = resizedImage?.withTintColor(.gray, renderingMode: .alwaysOriginal)
+        let tintColorImage = resizedImage?.withTintColor(.labelColorr, renderingMode: .alwaysOriginal)
         
         config.image = tintColorImage
         config.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5) //
@@ -309,9 +346,9 @@ final class HomeViewController: UIViewController {
     private lazy var questionButtonTwo: UIButton = {
         var config = UIButton.Configuration.plain()
         
-        let originalImage = UIImage(systemName: "questionmark.circle")
+        let originalImage = UIImage(systemName: "questionmark.circle.fill")
         let resizedImage = originalImage?.resized(to: CGSize(width: 18, height: 18))
-        let tintColorImage = resizedImage?.withTintColor(.gray, renderingMode: .alwaysOriginal)
+        let tintColorImage = resizedImage?.withTintColor(.labelColorr, renderingMode: .alwaysOriginal)
         
         config.image = tintColorImage
         config.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
@@ -494,10 +531,11 @@ final class HomeViewController: UIViewController {
         view.addSubview(dropDownAndTitleStackViewMain)
         createDropDownAndTitleAndTableViewStackView()
         
-        presenter = HomePresenter() //presenter = HomePresenter() создаёт этот объект, чтобы HomeViewController мог взаимодействовать с ним.
+        presenter = TimeToPostPresenter() //presenter = HomePresenter() создаёт этот объект, чтобы HomeViewController мог взаимодействовать с ним.
         presenter?.view = self //Инициализируете HomePresenter в HomeViewController и устанавливаете его view как self, чтобы Presenter мог взаимодействовать с HomeViewController.
         
-        view.addSubview(dropDownTableView)
+        view.addSubview(dropDownCountryTableView)
+        view.addSubview(dropDownCategoryTableView)
         
         //Hide Keyboard
         accountLinkTextField.delegate = self
@@ -511,35 +549,42 @@ final class HomeViewController: UIViewController {
     
     //MARK: - Objc
     @objc private func tapDropDownCountry() {
-        toggleDropDownMenu()
+        dropDownCountryTableView.isHidden.toggle()
+        createUpdateDropDownTableViewСountriesConstraints()
     }
     
     @objc private func tapDropDownCategory() {
-        presenter?.didTapDropDownCategory()
+        dropDownCategoryTableView.isHidden.toggle()
+        createUpdateDropDownTableViewСategoryConstraints()
     }
     
     @objc private func hideKeyboard() {
         accountLinkTextField.resignFirstResponder()
     }
     
-    private func toggleDropDownMenu() {
-        dropDownTableView.isHidden.toggle()
-        updateDropDownTableViewConstraints()
+    @objc private func tapTextField() {
+        if accountLinkTextField.isEnabled {
+            accountLinkTextField.layer.borderColor = UIColor.labelColorr.cgColor
+        } else {
+            accountLinkTextField.layer.borderColor = UIColor.gray.cgColor
+        }
     }
     
-    private func updateDropDownTableViewConstraints() {
-        dropDownTableView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            dropDownTableView.topAnchor.constraint(equalTo: dropDownsStackView.bottomAnchor),
-            dropDownTableView.leadingAnchor.constraint(equalTo: dropDownsStackView.leadingAnchor),
-            dropDownTableView.trailingAnchor.constraint(equalTo: dropDownsStackView.trailingAnchor, constant: -180),
-            dropDownTableView.heightAnchor.constraint(equalToConstant: 130)
-        ])
+    @objc private func endEditingTextField() {
+        accountLinkTextField.layer.borderColor = UIColor.gray.cgColor
     }
+    
+    ///TextField Clear Button Right
+    @objc private func tapButtonRight() {
+        accountLinkTextField.text = ""
+    }
+    
+    
+ 
 }
 
 //MARK:  - Extension
-private extension HomeViewController {
+private extension TimeToPostViewController {
     
     ///Create StackView NavigationBar  MAIN Constrains
     func createNavigationBarStackViewMainConstrains() {
@@ -589,39 +634,97 @@ private extension HomeViewController {
             activateNotificationButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,  constant: -12)
         ])
     }
+    
+    ///Constrains Table View Сountries
+    private func createUpdateDropDownTableViewСountriesConstraints() {
+        dropDownCountryTableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            dropDownCountryTableView.topAnchor.constraint(equalTo: dropDownsStackView.bottomAnchor),
+            dropDownCountryTableView.leadingAnchor.constraint(equalTo: dropDownsStackView.leadingAnchor),
+            dropDownCountryTableView.trailingAnchor.constraint(equalTo: dropDownsStackView.trailingAnchor, constant: -180),
+            dropDownCountryTableView.heightAnchor.constraint(equalToConstant: 180)
+        ])
+    }
+    
+    ///Constrains Table View Category
+    private func createUpdateDropDownTableViewСategoryConstraints() {
+        dropDownCategoryTableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            dropDownCategoryTableView.topAnchor.constraint(equalTo: dropDownsStackView.bottomAnchor),
+            dropDownCategoryTableView.leadingAnchor.constraint(equalTo: dropDownsStackView.leadingAnchor, constant: 180),
+            dropDownCategoryTableView.trailingAnchor.constraint(equalTo: dropDownsStackView.trailingAnchor),
+            dropDownCategoryTableView.heightAnchor.constraint(equalToConstant: 180)
+        ])
+    }
+    
+    
 }
 
 //MARK: - UITableView Dropdown menu
-extension HomeViewController: UITableViewDataSource {
+extension TimeToPostViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return options.count
+        if tableView == dropDownCountryTableView {
+            return country.count
+        } else if tableView == dropDownCategoryTableView {
+            return category.count
+        }
+        
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.backgroundColor = .navigationTabBar
-        cell.textLabel?.text = options[indexPath.row]
+        
+        cell.contentView.backgroundColor = .navigationTabBar
+        
+        if tableView == dropDownCountryTableView {
+            cell.textLabel?.text = country[indexPath.row]
+        } else if tableView == dropDownCategoryTableView {
+            cell.textLabel?.text = category[indexPath.row]
+        }
+      
+        
         cell.textLabel?.textColor = .white
         
         cell.textLabel?.font = UIFont(name: "Montserrat-SemiBold", size: 13)
+        
+        if indexPath == selectedIndexPath {
+            cell.contentView.backgroundColor = .labelColorr
+            cell.textLabel?.textColor = .black
+        }
         
         return cell
     }
 }
 
-extension HomeViewController: UITableViewDelegate {
+extension TimeToPostViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        drobButtonCountry.setTitle(options[indexPath.row], for: .normal)
-        dropDownTableView.isHidden = true
+        if tableView == dropDownCountryTableView {
+            drobButtonCountry.setTitle(country[indexPath.row], for: .normal)
+            dropDownCountryTableView.isHidden = true
+            
+            
+        } else if tableView == dropDownCategoryTableView {
+            drobButtonCategory.setTitle(category[indexPath.row], for: .normal)
+            dropDownCategoryTableView.isHidden = true
+        }
+      
+       
+        
+        selectedIndexPath = indexPath
+        
+        tableView.reloadData()
+        
+      
     }
 }
 
 //MARK: - UICollectionView
-extension HomeViewController: UICollectionViewDataSource {
+extension TimeToPostViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == collectionViewDays {
             return days.count
@@ -652,7 +755,7 @@ extension HomeViewController: UICollectionViewDataSource {
             
             if collectionView == collectionViewTime {
                 cell.contentView.addSubview(customView)
-                customView.label.text = "5 am"
+                customView.label.text = "5 am" //проверить страну (выюрана категория) Словарь (сохраниене )
                 customView.translatesAutoresizingMaskIntoConstraints = false
                 NSLayoutConstraint.activate([
                     customView.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
@@ -780,7 +883,7 @@ extension HomeViewController: UICollectionViewDataSource {
     }
 }
 
-extension HomeViewController: UICollectionViewDelegateFlowLayout {
+extension TimeToPostViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         if collectionView == collectionViewDays {
@@ -794,7 +897,7 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
 }
 
 //MARK: - Hide Keyboard Return
-extension HomeViewController: UITextFieldDelegate {
+extension TimeToPostViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
@@ -822,6 +925,6 @@ extension UIImage {
 }
 
 #Preview {
-    HomeViewController()
+    TimeToPostViewController()
 }
 
