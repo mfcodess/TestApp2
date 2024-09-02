@@ -81,11 +81,83 @@ enum APIRoutes  {
 class ApiManager {
     static let shared = ApiManager()
     
-    private init() {
+    private init() {}
+
+    // Метод для получения секьюрити ключа
+    func fetchSecurityKey(completion: @escaping (Result<String, Error>) -> Void) {
+        let url = URL(string: "https://sys-datapoint.flaidata.com/api/auth")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        // Тело запроса для получения ключа
+        let body = ["client_id": "your client_id", "Client_secret": "Your client_secret"]
+        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+
+        let dataTask = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            guard let data = data else {
+                let noDataError = NSError(domain: "com...", code: 0, userInfo: [NSLocalizedDescriptionKey: "No data received"])
+                completion(.failure(noDataError))
+                return
+            }
+
+            do {
+               
+                let responseDict = try JSONSerialization.jsonObject(with: data) as? [String: Any]
+                if let key = responseDict?["security_key"] as? String {
+                    completion(.success(key))
+                } else {
+                    let keyError = NSError(domain: "com...", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid key received"])
+                    completion(.failure(keyError))
+                }
+            } catch {
+                completion(.failure(error))
+            }
+        }
         
+        dataTask.resume()
     }
-    //получинеис Юзеров или Ошибку
-   func getUniqueIdTikTok(completion: @escaping (Result<User, Error>) -> Void) {
-        
+
+    // Метод для получения юзеров с использованием секьюрити ключа
+    func getUniqueIdTikTok(uniqueID: String, token: String, completion: @escaping (Result<[User], Error>) -> Void) {
+        fetchSecurityKey { result in
+            switch result {
+            case .success(let key):
+                let route = APIRoutes.getUniqueIdTikTok(uniquedID: uniqueID, token: token)
+                
+                var urlRequest = route.request
+                urlRequest.addValue("Bearer \(key)", forHTTPHeaderField: "Authorization")
+                
+                let dataTask = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+                    if let error = error {
+                        completion(.failure(error))
+                        return
+                    }
+                    
+                    guard let data = data else {
+                        let noDataError = NSError(domain: "com...", code: 0, userInfo: [NSLocalizedDescriptionKey: "No data received"])
+                        completion(.failure(noDataError))
+                        return
+                    }
+                    
+                    do {
+                        let users = try JSONDecoder().decode([User].self, from: data)
+                        completion(.success(users))
+                    } catch {
+                        completion(.failure(error))
+                    }
+                }
+                
+                dataTask.resume()
+                
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
 }
