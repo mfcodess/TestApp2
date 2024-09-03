@@ -9,13 +9,18 @@ import UIKit
 
 class VideoChange: UIViewController {
     
+    private var imageViewWidthConstraint: NSLayoutConstraint?
+    private var imageViewHeightConstraint: NSLayoutConstraint?
+    
+    
+    
     ///Image Background
     private lazy var backgroundBlurImageView: UIImageView = {
         let image = UIImageView()
         image.image = UIImage(named: "VideoScreenshotBlur")
         image.contentMode = .scaleToFill
         image.clipsToBounds = true
-        image.layer.cornerRadius = 30
+        //image.layer.cornerRadius = 30
         
 
         //Blur
@@ -40,7 +45,38 @@ class VideoChange: UIViewController {
         imageView.image = UIImage(named: "VideoScreenshot")
         imageView.contentMode = .scaleAspectFit
         //image.clipsToBounds = true
+        
+       
         return imageView
+    }()
+    
+    
+    
+    private lazy var blurAndImageStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.distribution = .equalSpacing
+
+        stackView.addArrangedSubview(backgroundBlurImageView)
+        backgroundBlurImageView.addSubview(imageView)
+
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        backgroundBlurImageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        imageViewWidthConstraint = imageView.widthAnchor.constraint(equalTo: backgroundBlurImageView.widthAnchor)
+        imageViewHeightConstraint = imageView.heightAnchor.constraint(equalTo: backgroundBlurImageView.heightAnchor)
+        
+        NSLayoutConstraint.activate([
+            imageViewWidthConstraint!,
+            imageViewHeightConstraint!,
+            imageView.centerXAnchor.constraint(equalTo: backgroundBlurImageView.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: backgroundBlurImageView.centerYAnchor),
+            
+            backgroundBlurImageView.widthAnchor.constraint(equalTo: stackView.widthAnchor),
+            backgroundBlurImageView.heightAnchor.constraint(equalTo: stackView.heightAnchor)
+        ])
+
+        return stackView
     }()
     
     
@@ -50,6 +86,10 @@ class VideoChange: UIViewController {
         let view = UIView()
         view.backgroundColor = .navigationTabBar
         view.layer.cornerRadius = 15
+        view.tag = 1
+     
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewsTappes))
+        view.addGestureRecognizer(tapGesture)
         
         let imageView = UIImageView()
         imageView.image = UIImage(named: "Insta")?.withRenderingMode(.alwaysTemplate) ///withRenderingMode(.alwaysTemplate) заставляет изображение использовать цвет, заданный через свойство tintColor, а не отображать свой оригинальный цвет
@@ -94,6 +134,10 @@ class VideoChange: UIViewController {
         let view = UIView()
         view.backgroundColor = .navigationTabBar
         view.layer.cornerRadius = 15
+        view.tag = 2
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewsTappes))
+        view.addGestureRecognizer(tapGesture)
         
         let imageView = UIImageView()
         imageView.image = UIImage(named: "TikTokFill")?.withRenderingMode(.alwaysTemplate) ///withRenderingMode(.alwaysTemplate) заставляет изображение использовать цвет, заданный через свойство tintColor, а не отображать свой оригинальный цвет
@@ -138,6 +182,10 @@ class VideoChange: UIViewController {
         let view = UIView()
         view.backgroundColor = .navigationTabBar
         view.layer.cornerRadius = 15
+        view.tag = 3
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewsTappes))
+        view.addGestureRecognizer(tapGesture)
         
         let imageView = UIImageView()
         imageView.image = UIImage(named: "YouTube")?.withRenderingMode(.alwaysTemplate) ///withRenderingMode(.alwaysTemplate) заставляет изображение использовать цвет, заданный через свойство tintColor, а не отображать свой оригинальный цвет
@@ -182,6 +230,10 @@ class VideoChange: UIViewController {
         let view = UIView()
         view.backgroundColor = .navigationTabBar
         view.layer.cornerRadius = 15
+        view.tag = 4
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewsTappes))
+        view.addGestureRecognizer(tapGesture)
         
         let imageView = UIImageView()
         imageView.image = UIImage(named: "Snapchat")?.withRenderingMode(.alwaysTemplate) ///withRenderingMode(.alwaysTemplate) заставляет изображение использовать цвет, заданный через свойство tintColor, а не отображать свой оригинальный цвет
@@ -244,18 +296,59 @@ class VideoChange: UIViewController {
 
         view.layer.insertSublayer(setupUI(), at: 0)
         
-        view.addSubview(backgroundBlurImageView)
-        createBackgroundBlurImageViewConstrains()
-
-        view.addSubview(imageView)
-        createcreateBackgroundImageViewConstrains()
         
         view.addSubview(aspectRatioStackView)
         createAspectRatioStackViewConstarins()
+        
+        view.addSubview(blurAndImageStackView)
+        createBlurAndImageStackViewConstarins()
+        
+        
     }
     
-    @objc func tapSegment() {
-        
+    var aspectRatioConstraint: NSLayoutConstraint?
+    @objc func viewsTappes(sender: UITapGestureRecognizer) {
+        if let view = sender.view {
+            // Деактивация предыдущего констрейнта соотношения сторон
+            aspectRatioConstraint?.isActive = false
+
+            switch view.tag {
+            case 1:
+                print("Instagram")
+                imageViewWidthConstraint?.constant = 70
+                imageViewHeightConstraint?.constant = 70
+                aspectRatioConstraint = imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor, multiplier: 1.0)
+                
+            case 2:
+                print("TikTok")
+                imageViewWidthConstraint?.constant = 40
+                imageViewHeightConstraint?.constant = 40
+                aspectRatioConstraint = imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor, multiplier: 9.0/16.0)
+                
+            case 3:
+                print("YouTube")
+                imageViewWidthConstraint?.constant = 100
+                imageViewHeightConstraint?.constant = 320
+                aspectRatioConstraint = nil // YouTube does not need aspectRatioConstraint
+
+            case 4:
+                print("Snapchat")
+                imageViewWidthConstraint?.constant = 40
+                imageViewHeightConstraint?.constant = 40
+                aspectRatioConstraint = imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor, multiplier: 9.0/16.0)
+                
+            default:
+                break
+            }
+
+            // Активация нового констрейнта соотношения сторон, если он был создан
+            aspectRatioConstraint?.isActive = true
+            
+            // Обновление макета
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
+        }
     }
     func setupUI() -> CAGradientLayer {
         let gradientLayer = CAGradientLayer()
@@ -269,38 +362,28 @@ class VideoChange: UIViewController {
         
         return gradientLayer
     }
+    
+    
 }
 
 //MARK: - Extension
 private extension VideoChange {
     
     ///Background Image Constrains
-    func createBackgroundBlurImageViewConstrains() {
-        backgroundBlurImageView.translatesAutoresizingMaskIntoConstraints = false
+    func createBlurAndImageStackViewConstarins() {
+        blurAndImageStackView.translatesAutoresizingMaskIntoConstraints  = false
         NSLayoutConstraint.activate([
-            backgroundBlurImageView.topAnchor.constraint(equalTo: view.topAnchor),
-            backgroundBlurImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            backgroundBlurImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            //backgroundVideoImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -320),
+            blurAndImageStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 50),
+            blurAndImageStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            blurAndImageStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            blurAndImageStackView.bottomAnchor.constraint(equalTo: aspectRatioStackView.topAnchor),
             
-            backgroundBlurImageView.heightAnchor.constraint(equalToConstant: 410)
         ])
     }
-    
-    func createcreateBackgroundImageViewConstrains() {
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: backgroundBlurImageView.topAnchor, constant: 20),
-            imageView.trailingAnchor.constraint(equalTo: backgroundBlurImageView.trailingAnchor),
-            imageView.leadingAnchor.constraint(equalTo: backgroundBlurImageView.leadingAnchor),
-            imageView.bottomAnchor.constraint(equalTo: backgroundBlurImageView.bottomAnchor, constant: 25),
-        ])
-    }
-    
     func createAspectRatioStackViewConstarins() {
         aspectRatioStackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            aspectRatioStackView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: -20),
+            aspectRatioStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 410),
             aspectRatioStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
             aspectRatioStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
             
