@@ -8,20 +8,19 @@
 import UIKit
 
 final class TabBarViewController: UITabBarController {
-
+    
     //MARK:  - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         
         navigationTabBarVC()
-   
+        
         view.layer.insertSublayer(setupUI(), at: 0)
         
         tabBar.tintColor = .white
         colorAppearanceTabBar()
     }
 }
-
 
 //MARK:  - Extension
 private extension TabBarViewController {

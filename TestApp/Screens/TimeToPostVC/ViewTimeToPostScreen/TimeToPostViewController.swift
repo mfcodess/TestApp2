@@ -570,9 +570,6 @@ final class TimeToPostViewController: UIViewController {
         
         view.addSubview(activateNotificationButton)
         createActivateNotificationButtonConstrains()
-        
-        
-        
     }
     
     //MARK: - Objc

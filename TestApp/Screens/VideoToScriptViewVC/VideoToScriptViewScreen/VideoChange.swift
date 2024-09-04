@@ -8,7 +8,7 @@
 import UIKit
 
 class VideoChange: UIViewController {
-  
+    
     private var imageViewWidthConstraint: NSLayoutConstraint?
     private var imageViewHeightConstraint: NSLayoutConstraint?
     
@@ -42,20 +42,20 @@ class VideoChange: UIViewController {
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
- 
-
+    
+    
     private lazy var backgroundBlurImageView: UIImageView = {
         let image = UIImageView()
         image.image = UIImage(named: "VideoScreenshotBlur")
         image.contentMode = .scaleToFill
         image.clipsToBounds = true
-       
-
+        
+    
         // Blur
         let blurEffect = UIBlurEffect(style: .systemChromeMaterialDark)
         var blurVisualEffectView = UIVisualEffectView(effect: blurEffect)
         image.addSubview(blurVisualEffectView)
- 
+        
         blurVisualEffectView.translatesAutoresizingMaskIntoConstraints = false
         blurVisualEffectView.contentView.addSubview(imageView)
         
@@ -76,7 +76,7 @@ class VideoChange: UIViewController {
         
         return image
     }()
-
+    
     private lazy var blurAndImageStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -85,12 +85,8 @@ class VideoChange: UIViewController {
         
         stackView.addArrangedSubview(backgroundBlurImageView)
         
-        
-        
         return stackView
     }()
-    
-    
     
     ///View Insta
     private lazy var viewInsta: UIView = {
@@ -158,13 +154,13 @@ class VideoChange: UIViewController {
         imageView.tintColor = .navigationTabBarColorIcons
         
         self.viewTikTokChangeImage = imageView
-    
+        
         imageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             imageView.heightAnchor.constraint(equalToConstant: 25),
             imageView.widthAnchor.constraint(equalToConstant: 65)
         ])
-
+        
         let label = UILabel()
         label.text = "9:16"
         label.font = UIFont(name: "Montserrat-SemiBold", size: 12)
@@ -218,7 +214,7 @@ class VideoChange: UIViewController {
             imageView.heightAnchor.constraint(equalToConstant: 25),
             imageView.widthAnchor.constraint(equalToConstant: 65)
         ])
-
+        
         let label = UILabel()
         label.text = "16:9"
         label.font = UIFont(name: "Montserrat-SemiBold", size: 12)
@@ -271,7 +267,7 @@ class VideoChange: UIViewController {
             imageView.heightAnchor.constraint(equalToConstant: 25),
             imageView.widthAnchor.constraint(equalToConstant: 65)
         ])
-
+        
         let label = UILabel()
         label.text = "9:16"
         label.font = UIFont(name: "Montserrat-SemiBold", size: 12)
@@ -304,10 +300,9 @@ class VideoChange: UIViewController {
     
     ///StackView Aspect ratio
     private lazy var aspectRatioStackView: UIStackView = {
-       let stackView = UIStackView()
+        let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.distribution = .equalSpacing
-        
         
         stackView.layer.borderColor = UIColor.gray.cgColor
         stackView.layer.borderWidth = 0.6
@@ -320,34 +315,25 @@ class VideoChange: UIViewController {
         
         return stackView
     }()
-   
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.layer.insertSublayer(setupUI(), at: 0)
         
+        view.layer.insertSublayer(setupUI(), at: 0)
         
         view.addSubview(aspectRatioStackView)
         createAspectRatioStackViewConstarins()
         
         view.addSubview(blurAndImageStackView)
         createBlurAndImageStackViewConstarins()
-        
-        
     }
-
+    
     @objc func viewsTappes(sender: UITapGestureRecognizer) {
         if let view = sender.view {
-           
-        
-
+    
             switch view.tag {
             case 1:
                 print("Instagram")
-                
-               
                 
                 viewInstaChangeImage?.image = UIImage(named: "InstaFiil")?.withRenderingMode(.alwaysTemplate)
                 viewInstaChangeImage?.tintColor = .labelColorr
@@ -371,15 +357,8 @@ class VideoChange: UIViewController {
                 viewYouTubeChange?.backgroundColor = .clear
                 viewSnapchatChange?.backgroundColor = .clear
                 
-                NSLayoutConstraint.activate([
-                
-                ])
-                
             case 2:
                 print("TikTok")
-          
-               
-             
                 
                 viewInstaChangeImage?.image = UIImage(named: "Insta")?.withRenderingMode(.alwaysTemplate)
                 viewInstaChangeImage?.tintColor = .navigationTabBarColorIcons
@@ -396,16 +375,15 @@ class VideoChange: UIViewController {
                 viewSnapchatChangeImage?.image = UIImage(named: "Snapchat")?.withRenderingMode(.alwaysTemplate)
                 viewSnapchatChangeImage?.tintColor = .navigationTabBarColorIcons
                 viewSnapchatChangeLabel?.textColor = .navigationTabBarColorIcons
-                 
+                
                 
                 viewInstaChange?.backgroundColor = .clear
                 viewTikTokChange?.backgroundColor = .navigationTabBar
                 viewYouTubeChange?.backgroundColor = .clear
                 viewSnapchatChange?.backgroundColor = .clear
-                 
+                
             case 3:
                 print("YouTube")
-         
                 
                 viewInstaChangeImage?.image = UIImage(named: "Insta")?.withRenderingMode(.alwaysTemplate)
                 viewInstaChangeImage?.tintColor = .navigationTabBarColorIcons
@@ -428,10 +406,9 @@ class VideoChange: UIViewController {
                 viewTikTokChange?.backgroundColor = .clear
                 viewYouTubeChange?.backgroundColor = .navigationTabBar
                 viewSnapchatChange?.backgroundColor = .clear
-
+                
             case 4:
                 print("Snapchat")
-
                 
                 viewInstaChangeImage?.image = UIImage(named: "Insta")?.withRenderingMode(.alwaysTemplate)
                 viewInstaChangeImage?.tintColor = .navigationTabBarColorIcons
@@ -450,7 +427,6 @@ class VideoChange: UIViewController {
                 viewSnapchatChangeLabel?.textColor = .labelColorr
                 
                 
-                
                 viewInstaChange?.backgroundColor = .clear
                 viewTikTokChange?.backgroundColor = .clear
                 viewYouTubeChange?.backgroundColor = .clear
@@ -459,7 +435,7 @@ class VideoChange: UIViewController {
             default:
                 break
             }
-           
+            
             // Обновление макета
             UIView.animate(withDuration: 0.3) { [self] in
                 imageViewWidthConstraint?.constant = 130
@@ -467,15 +443,8 @@ class VideoChange: UIViewController {
                 self.view.layoutIfNeeded()
             }
         }
-        
-        
-        
-        
-       
-        
-        
-        
     }
+    
     func setupUI() -> CAGradientLayer {
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = view.bounds
@@ -488,8 +457,6 @@ class VideoChange: UIViewController {
         
         return gradientLayer
     }
-    
-    
 }
 
 //MARK: - Extension
@@ -516,9 +483,6 @@ private extension VideoChange {
             aspectRatioStackView.heightAnchor.constraint(equalToConstant: 55)
         ])
     }
-    
-   
-   
 }
 
 #Preview {
