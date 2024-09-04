@@ -10,6 +10,9 @@ import Foundation
 enum APIRoutes  {
     case getUniqueIdTikTok(uniquedID: String, token: String) ///Представляет запрос на привязку TikTok аккаунта.
     
+    //1) запросос по полусению токена
+    
+    
     var baseURL: URL { ///Достукиваюсь до сайта или сервера и получаю от него нужную информацию или выполнить какое-то действие, например, привязать TikTok-аккаунт.
         return URL(string: "https://sys-datapoint.flaidata.com/api/app")!
     }
